@@ -1,6 +1,6 @@
 {
   "name": "@goaround/litepicker",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "description": "Date range picker - lightweight, no dependencies",
   "main": "./dist/litepicker.umd.js",
   "types": "./dist/types/index.d.ts",
@@ -11,7 +11,7 @@
     "plugins": "webpack --config config/webpack.plugins.js && webpack --config config/webpack.plugins.nocss.js",
     "watch": "webpack -w --config config/webpack.dev.js",
     "test": "jest",
-    "prepare": "npm run prod",
+    "prepare": "npm run prod && npm run plugins",
 		"prepublishOnly": "npm run test"
   },
   "keywords": [
