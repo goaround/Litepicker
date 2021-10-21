@@ -16,6 +16,7 @@ Litepicker.add('multiselect', {
 
     const defaultOptions = {
       max: null,
+			dates: [],
     };
     picker.options.multiselect = { ...defaultOptions, ...picker.options.multiselect };
 
@@ -36,7 +37,8 @@ Litepicker.add('multiselect', {
     }
 
     picker.on('before:show', () => {
-      picker.preMultipleDates = [...picker.multipleDates];
+      picker.preMultipleDates = [...picker.options.multiselect.dates, ...picker.multipleDates];
+			picker.options.multiselect.dates = [];
     });
 
     picker.on('show', () => {
@@ -104,6 +106,11 @@ Litepicker.add('multiselect', {
     picker.clearMultipleDates = () => {
       picker.preMultipleDates.length = 0;
       picker.multipleDates.length = 0;
+    }
+
+		picker.setMultipleDates = (dates) => {
+      picker.preMultipleDates = picker.multipleDates = [...dates];
+			picker.render();
     }
 
     picker.getMultipleDates = () => {
