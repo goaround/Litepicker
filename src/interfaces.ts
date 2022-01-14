@@ -79,6 +79,7 @@ export interface ILPConfiguration {
   };
   multiselect?: {
     max?: number | null;
+    dates?: number[];
   };
   keyboardnav?: {
     firstTabIndex?: number;
