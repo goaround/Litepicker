@@ -78,7 +78,13 @@ export class Calendar extends LPCore {
       mainBlock
         .querySelector(`.${style.monthItem}:last-child`)
         .querySelector(`.${style.monthItemHeader}`)
-        .appendChild(resetButton);
+        .insertBefore(
+          resetButton,
+           mainBlock
+            .querySelector(`.${style.monthItem}:last-child`)
+            .querySelector(`.${style.monthItemHeader}`)
+            .querySelector(`.${style.buttonNextMonth}`)
+          );
     }
 
     this.ui.appendChild(mainBlock);
