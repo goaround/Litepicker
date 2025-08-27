@@ -85,6 +85,39 @@ export class DateTime {
       });
   }
 
+  public static convertHighlightedDays(
+    array: Array<Date | Date[] | string | string[] | object>,
+    format: string): Array<DateTime | DateTime[] | object> {
+    return array
+      .map((d) => {
+        if (d && typeof d === 'object' && !(d instanceof Array) && !(d instanceof Date)) {
+          // Handle objects with date/dates and color properties
+          const highlightObj = d as any;
+          if (highlightObj.date) {
+            // Single date with color: { date: "2024-01-01", color: "#ff0000" }
+            return {
+              date: new DateTime(highlightObj.date, format),
+              color: highlightObj.color
+            };
+          } else if (highlightObj.dates && Array.isArray(highlightObj.dates)) {
+            // Date range with color: { dates: ["2024-01-01", "2024-01-03"], color: "#ff0000" }
+            return {
+              dates: highlightObj.dates.map((date: Date | string) => new DateTime(date, format)),
+              color: highlightObj.color
+            };
+          }
+          // Fallback for malformed objects
+          return d;
+        }
+        
+        if (d instanceof Array) {
+          return (d as Array<Date | string>).map(d1 => new DateTime(d1, format));
+        }
+        
+        return new DateTime(d as Date | string, format);
+      });
+  }
+
   public static getDateZeroTime(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
   }

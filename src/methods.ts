@@ -211,7 +211,7 @@ Litepicker.prototype.setLockDays = function (array) {
 };
 
 Litepicker.prototype.setHighlightedDays = function (array) {
-  this.options.highlightedDays = DateTime.convertArray(
+  this.options.highlightedDays = DateTime.convertHighlightedDays(
     array,
     this.options.highlightedDaysFormat,
   );
@@ -276,7 +276,7 @@ Litepicker.prototype.setOptions = function (options) {
   }
 
   if (this.options.highlightedDays.length) {
-    this.options.highlightedDays = DateTime.convertArray(
+    this.options.highlightedDays = DateTime.convertHighlightedDays(
       this.options.highlightedDays,
       this.options.highlightedDaysFormat,
     );
