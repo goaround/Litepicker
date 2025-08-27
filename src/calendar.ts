@@ -422,17 +422,52 @@ export class Calendar extends LPCore {
     }
 
     if (this.options.highlightedDays.length) {
-      const isHighlighted = this.options.highlightedDays
-        .filter((d) => {
-          if (d instanceof Array) {
-            return date.isBetween(d[0], d[1], '[]');
-          }
+      let highlightColor = null;
+      let isHighlighted = false;
 
-          return d.isSame(date, 'day');
-        }).length;
+      // Check each highlighted day configuration
+      for (const d of this.options.highlightedDays) {
+        let matches = false;
+        let color = null;
+
+        // Handle new format with color information
+        if (d && typeof d === 'object' && !(d instanceof Array) && !d.isSame) {
+          if (d.date && d.color) {
+            // Single date with color: { date: DateTime, color: "#ff0000" }
+            matches = d.date.isSame(date, 'day');
+            color = d.color;
+          } else if (d.dates && Array.isArray(d.dates) && d.color) {
+            // Date range with color: { dates: [DateTime, DateTime], color: "#ff0000" }
+            matches = date.isBetween(d.dates[0], d.dates[1], '[]');
+            color = d.color;
+          }
+        }
+        // Handle legacy format (DateTime objects or arrays)
+        else if (d instanceof Array) {
+          matches = date.isBetween(d[0], d[1], '[]');
+        }
+        else if (d && d.isSame) {
+          matches = d.isSame(date, 'day');
+        }
+
+        if (matches) {
+          isHighlighted = true;
+          if (color) {
+            highlightColor = color;
+            break; // Use the first color found
+          }
+        }
+      }
 
       if (isHighlighted) {
         day.classList.add(style.isHighlighted);
+        
+        // Apply custom color if specified
+        if (highlightColor) {
+          day.style.setProperty('--litepicker-highlighted-day-color-custom', highlightColor);
+          day.style.setProperty('--litepicker-highlighted-day-color-bg', highlightColor);
+          day.style.setProperty('--litepicker-highlighted-day-color', 'white'); // Contrasting text color
+        }
       }
     }
 

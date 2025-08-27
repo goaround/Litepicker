@@ -22,6 +22,16 @@ interface ILPOptionTooltip {
   many?: string;
 }
 
+interface IHighlightedDay {
+  date: DateTime | Date | string | number;
+  color: string;
+}
+
+interface IHighlightedDayRange {
+  dates: [DateTime | Date | string | number, DateTime | Date | string | number];
+  color: string;
+}
+
 export interface ILPConfiguration {
   element: HTMLElement | HTMLInputElement;
   elementEnd?: HTMLElement | HTMLInputElement | null;
